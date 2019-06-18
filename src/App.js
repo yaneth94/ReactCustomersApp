@@ -1,13 +1,34 @@
-import React, { Component }  from "react";
-import {  BrowserRouter as Router,Route } from "react-router-dom";
+import React, { Component } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 
+import HomeContainer from './containers/HomeContainer.js';
+import CustomersContainer from './containers/CustomersContainer.js';
+
+/*
+<Switch>
+            <Route
+              path="/customers/new"
+              component={this.renderCustomerNewContainer}
+            />
+            <Route
+              path="/customers/:dni"
+              component={this.renderCustomerListContainer}
+            />
+            <Route
+              path="/customers"
+              component={this.renderCustomerContainer}
+            />
+            <Route path="/" component={this.renderHome} />
+          </Switch>
+*/
+
 class App extends Component {
-  renderHome = () => <h1>Home</h1>;
+  renderHome = () => <HomeContainer></HomeContainer>;
 
   renderCustomerContainer = () => <h1>Customer Container</h1>;
 
-  renderCustomerListContainer = () => <h1>Customers List Container</h1>;
+  renderCustomerListContainer = () => < CustomersContainer></CustomersContainer>;
 
   renderCustomerNewContainer = () => <h1>Customer New Container</h1>;
 
@@ -16,9 +37,21 @@ class App extends Component {
       <Router>
         <div>
           <Route exact path="/" component={this.renderHome} />
-          <Route exact path="/customers" component={this.renderCustomerContainer} />
-          <Route exact path="/customers/:dni" component={this.renderCustomerListContainer} />
-          <Route exact path="/customers/new" component={this.renderCustomerNewContainer} />
+          <Route
+            exact
+            path="/customers"
+            component={this.renderCustomerListContainer}
+          />
+          <Switch>
+            <Route
+              path="/customers/new"
+              component={this.renderCustomerNewContainer}
+            />
+            <Route
+              path="/customers/:dni"
+              component={this.renderCustomerContainer}
+            />
+          </Switch>
         </div>
       </Router>
     );
