@@ -1,0 +1,36 @@
+{
+  "customers": [
+    {
+      "dni": "2700000",
+      "name": "Yaneth Garcia",
+      "age": 37
+    },
+    {
+      "dni": "3000000",
+      "name": "Zoila Villatoro",
+      "age": 25
+    },
+    {
+      "dni": "3000001",
+      "name": "Erick Ventura",
+      "age": 25
+    }
+  ],
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}

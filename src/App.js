@@ -4,6 +4,7 @@ import "./App.css";
 
 import HomeContainer from './containers/HomeContainer.js';
 import CustomersContainer from './containers/CustomersContainer.js';
+import CustomerContainer from './containers/CustomerContainer.js';
 
 /*
 <Switch>
@@ -49,7 +50,7 @@ class App extends Component {
             />
             <Route
               path="/customers/:dni"
-              component={this.renderCustomerContainer}
+              render={props => <CustomerContainer dni={props.match.params.dni}/>}
             />
           </Switch>
         </div>
