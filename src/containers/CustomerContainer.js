@@ -4,6 +4,9 @@ import PropTypes from "prop-types";
 import AppFrame from "./../components/AppFrame";
 import { getCustomersByDni } from "./../selectors/customers";
 import { Route } from "react-router-dom";
+import { withRouter } from "react-router-dom";
+import { fetchCustomers } from "./../actions/fetchCustomers";
+import { updateCustomer } from './../actions/updateCustomer';
 import CustomerEdit from "./../components/CustomerEdit";
 import CustomerData from "./../components/CustomerData";
 /*
@@ -20,13 +23,35 @@ import CustomerData from "./../components/CustomerData";
 */
 
 class CustomerContainer extends Component {
+  componentDidMount() {
+    if (!this.props.customer) {
+      this.props.fetchCustomers();
+    }
+  }
+  handleSubmit = values => {
+    console.log(JSON.stringify(values));
+    const { id } = values;
+    this.props.updateCustomer(id, values);
+  };
+  HandleOnBack = () => {
+    this.props.history.goBack();
+  };
   renderBody = () => (
     <Route
       path="/customers/:dni/edit"
       children={({ match }) => {
-        //es un alias
-        const CustomerControl = match ? CustomerEdit : CustomerData;
-        return <CustomerControl {...this.props.customer} />;
+        if (this.props.customer) {
+          //es un alias
+          const CustomerControl = match ? CustomerEdit : CustomerData;
+          return (
+            <CustomerControl
+              {...this.props.customer}
+              onSubmit={this.handleSubmit}
+              onBack={this.HandleOnBack}
+            />
+          );
+        }
+        return null;
       }}
     />
   );
@@ -45,12 +70,19 @@ class CustomerContainer extends Component {
 
 CustomerContainer.propTypes = {
   dni: PropTypes.string.isRequired,
-  customer: PropTypes.object.isRequired
+  customer: PropTypes.object,
+  fetchCustomers: PropTypes.func.isRequired,
+  updateCustomers:PropTypes.func.isRequired,
 };
 const mapStateToProps = (state, props) => ({
   customer: getCustomersByDni(state, props)
 });
-export default connect(
-  mapStateToProps,
-  null
-)(CustomerContainer);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    {
+      fetchCustomers,
+      updateCustomer
+    }
+  )(CustomerContainer)
+);

@@ -1,16 +1,19 @@
 {
   "customers": [
     {
+      "id": "2700000",
       "dni": "2700000",
-      "name": "Yaneth Garcia",
+      "name": "Yaneth Garcia Ventura",
       "age": 37
     },
     {
+      "id": "3000000",
       "dni": "3000000",
       "name": "Zoila Villatoro",
       "age": 25
     },
     {
+      "id": "3000001",
       "dni": "3000001",
       "name": "Erick Ventura",
       "age": 25
