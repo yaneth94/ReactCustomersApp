@@ -15,4 +15,7 @@ export const apiPut = (url, id, obj) => () =>
         return Promise.reject(r.validation);
       }
       return r;
+    })
+    .catch(e => {
+      return Promise.reject(e);
     });

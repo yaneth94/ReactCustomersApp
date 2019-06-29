@@ -5,6 +5,7 @@ import "./App.css";
 import HomeContainer from './containers/HomeContainer.js';
 import CustomersContainer from './containers/CustomersContainer.js';
 import CustomerContainer from './containers/CustomerContainer.js';
+import NewCustomerContainer from "./containers/NewCustomerContainer";
 
 /*
 <Switch>
@@ -46,7 +47,7 @@ class App extends Component {
           <Switch>
             <Route
               path="/customers/new"
-              component={this.renderCustomerNewContainer}
+              component={NewCustomerContainer}
             />
             <Route
               path="/customers/:dni"

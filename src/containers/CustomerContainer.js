@@ -6,9 +6,10 @@ import { getCustomersByDni } from "./../selectors/customers";
 import { Route } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import { fetchCustomers } from "./../actions/fetchCustomers";
-import { updateCustomer } from './../actions/updateCustomer';
+import { updateCustomer } from "./../actions/updateCustomer";
 import CustomerEdit from "./../components/CustomerEdit";
 import CustomerData from "./../components/CustomerData";
+import { SubmissionError } from "redux-form";
 /*
 <Route
       path="/customers/:dni/edit"
@@ -31,9 +32,21 @@ class CustomerContainer extends Component {
   handleSubmit = values => {
     console.log(JSON.stringify(values));
     const { id } = values;
-    this.props.updateCustomer(id, values);
+    return this.props
+      .updateCustomer(id, values)
+      .then(r => {
+        if (r.error) {
+          throw new SubmissionError(r.payload);
+        }
+      })
+      .catch(e => {
+        throw new SubmissionError(e);
+      });
   };
   HandleOnBack = () => {
+    this.props.history.goBack();
+  };
+  handleOnSubmitSuccess = () => {
     this.props.history.goBack();
   };
   renderBody = () => (
@@ -47,6 +60,7 @@ class CustomerContainer extends Component {
             <CustomerControl
               {...this.props.customer}
               onSubmit={this.handleSubmit}
+              onSubmitSuccess={this.handleOnSubmitSuccess}
               onBack={this.HandleOnBack}
             />
           );
@@ -72,7 +86,7 @@ CustomerContainer.propTypes = {
   dni: PropTypes.string.isRequired,
   customer: PropTypes.object,
   fetchCustomers: PropTypes.func.isRequired,
-  updateCustomers:PropTypes.func.isRequired,
+  updateCustomers: PropTypes.func.isRequired
 };
 const mapStateToProps = (state, props) => ({
   customer: getCustomersByDni(state, props)
