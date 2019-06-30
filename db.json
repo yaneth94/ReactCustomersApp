@@ -3,8 +3,9 @@
     {
       "id": "3000001",
       "dni": "3000001",
-      "name": "Erick Ventura",
-      "age": 25
+      "name": "ERICK VENTURA",
+      "age": 25,
+      "isDeleteAllow": false
     },
     {
       "name": "YANETH GARCIA",
