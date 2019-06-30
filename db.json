@@ -1,22 +1,17 @@
 {
   "customers": [
     {
-      "id": "2700000",
-      "dni": "2700000",
-      "name": "YANETH GARCI",
-      "age": 30
-    },
-    {
-      "id": "3000000",
-      "dni": "3000000",
-      "name": "ZOILA VILLATORO",
-      "age": 25
-    },
-    {
       "id": "3000001",
       "dni": "3000001",
       "name": "Erick Ventura",
       "age": 25
+    },
+    {
+      "name": "YANETH GARCIA",
+      "dni": "2700000",
+      "age": 78,
+      "id": "Xw7ugev",
+      "isDeleteAllow": false
     }
   ],
   "posts": [

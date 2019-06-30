@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { reduxForm, Field } from "redux-form";
 import { setPropsAsInitial } from "./../helpers/setPropsAsInitial";
@@ -16,6 +16,14 @@ import { Prompt } from "react-router-dom";
             label="Age: "
           />
  */
+/*
+const myField = ({ input, meta, type, label, name }) => (
+  <div>
+    <label htmlFor={name}>{label}</label>
+    <input {...input} type={!type ? "text" : type} />
+    {meta.touched && meta.error && <span>{meta.error}</span>}
+  </div>
+); */
 
 const validate = values => {
   const error = {};
@@ -38,13 +46,6 @@ const validate = values => {
   return error;
 };
 
-const myField = ({ input, meta, type, label, name }) => (
-  <div>
-    <label htmlFor={name}>{label}</label>
-    <input {...input} type={!type ? "text" : type} />
-    {meta.touched && meta.error && <span>{meta.error}</span>}
-  </div>
-);
 
 const toNumber = value => value && Number(value);
 
@@ -54,56 +55,78 @@ const toLower = value => value && value.toLowerCase();
 // validación en normalize del lado del cliente informar del error
 // forzar a quelos valores sean validos y los que se espera
 const onlyGrow = (value, previosValue, values) =>
-  value && (!previosValue ? value :  (value > previosValue ? value : previosValue));
+  value &&
+  (!previosValue ? value : value > previosValue ? value : previosValue);
 
-const CustomerEdit = ({
-  handleSubmit,
-  submitting,
-  onBack,
-  pristine,
-  submitSucceeded
-}) => {
-  return (
+class CustomerEdit extends Component {
+  componentDidMount() {
+    if (this.txt) {
+      this.txt.focus();
+    }
+  }
+
+  renderField = ({ input, meta, type, label, name, withFocus }) => (
     <div>
-      <h2>Edición del Cliente</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
+      <label htmlFor={name}>{label}</label>
+      <input
+        {...input}
+        type={!type ? "text" : type}
+        ref={
+          withFocus &&
+          (txt => {
+            this.txt = txt;
+          })
+        }
+      />
+      {meta.touched && meta.error && <span>{meta.error}</span>}
+    </div>
+  );
+  render() {
+    const {
+      handleSubmit,
+      submitting,
+      onBack,
+      pristine,
+      submitSucceeded
+    } = this.props;
+    return (
+      <div>
+        <h2>Edición del cliente</h2>
+        <form onSubmit={handleSubmit}>
           <Field
+            withFocus
             name="name"
-            component={myField}
-            type="text"
-            label="Name: "
+            component={this.renderField}
+            label="Nombre"
             parse={toUpper}
             format={toLower}
           />
-        </div>
-        <div>
-          <Field name="dni" component={myField} type="text" label="Dni: " />
-        </div>
-        <div>
+          <Field name="dni" component={this.renderField} label="Dni"  type="number"/>
           <Field
             name="age"
-            component={myField}
+            component={this.renderField}
             type="number"
-            label="Age: "
+            label="Edad"
             parse={toNumber}
             normalize={onlyGrow}
           />
-        </div>
-        <CustomersActions>
-          <button type="submit" disabled={ pristine || submitting}>
-            Aceptar
-          </button>
-          <button onClick={onBack} type="button" disabled={submitting}>Cancelar</button>
-        </CustomersActions>
-        <Prompt
-          when={!pristine && !submitSucceeded}
-          message="Se perderán los datos si continúa"
-        />
-      </form>
-    </div>
-  );
-};
+          <CustomersActions>
+            <button type="submit" disabled={pristine || submitting}>
+              Aceptar
+            </button>
+            <button type="button" disabled={submitting} onClick={onBack}>
+              Cancelar
+            </button>
+          </CustomersActions>
+          <Prompt
+            when={!pristine && !submitSucceeded}
+            message="Se perderán los datos si continúa"
+          />
+        </form>
+      </div>
+    );
+  }
+}
 
 CustomerEdit.propTypes = {
   name: PropTypes.string,
